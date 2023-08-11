@@ -14,6 +14,9 @@
             toString: {value() {(new Error).stack.includes('toString@')&&(close(),location.replace("about:blank"),malloc())}}
         }));
     })();
+    function check(e){
+        return e&&e.indexOf("data:") && e.indexOf("blob:") && hashfilename(e).indexOf("http")
+    }
     function decompress(a){
         return a;
     }
@@ -192,8 +195,8 @@
     }
     function proxyResource(a) {
        var that = this;
-        if(a&&a.indexOf("data:") && a.indexOf("blob:") && hashfilename(a).indexOf("http")){
-	var o = hexfile(a)
+        if(check(a)){
+	    var o = hexfile(a)
         if(cache[o]) return that.setAttribute('src',cache[o]);
             request(a,function(e){
                 that.setAttribute('src', tolink(e));
@@ -244,27 +247,26 @@
         html.innerHTML = xml.responseText;
         var scripts = html.querySelectorAll('script');
         for(var i = 0; i < scripts.length;i++){
-            if(scripts[i]._src){
+            if(check(scripts[i]._src)){
                 scripts[i]._src =  tolink(requestAsyc(scripts[i]._src));
             }
         }
         var img = html.querySelectorAll('img');
-
         for(var i = 0; i < img.length;i++){
-            if(img[i].src){
+            if(check(img[i].src)){
                 img[i].setAttribute('src',tolink(requestAsyc(img[i].src)))
             }
         }
         var audio = html.querySelectorAll('audio');
         for(var i = 0; i < audio.length;i++){
-            if(audio[i].src){
+            if(check(audio[i].src)){
                 audio[i].setAttribute('src',tolink(requestAsyc(audio[i].src)))
             }
         }
         onerror = null; 
 	var __appendChild = Node.prototype.appendChild;
         Node.prototype.appendChild = function (e) {
-            if (this === document.body && e && e.nodeName == 'SCRIPT' && e._src &&e._src.indexOf("data:") && e._src.indexOf("blob:") && hashfilename(e._src).indexOf("http")) { 
+            if (this === document.body && e && e.nodeName == 'SCRIPT' && check(e._src)) { 
                 if(e.async === false){
                     e._src = tolink(requestAsyc(e._src));
                     __appendChild.call(this, e);
