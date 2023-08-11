@@ -158,9 +158,9 @@
                 that._open(method,tolink(e));
                 that._send(msg);
             },function(e,a){
-                if(e == 0){that.ontimeout(a)}
-                if(e == 1){that.onabort(a)}
-                if(e == 2){that.onerror(a)}
+                if(e == 0){that.ontimeout&&that.ontimeout(a)}
+                if(e == 1){that.onabort&&that.onabort(a)}
+                if(e == 2){that.onerror&&that.onerror(a)}
             })
         }
 	}
