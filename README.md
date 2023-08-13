@@ -3,6 +3,8 @@
 [https://github.com/emn178/js-md5](https://github.com/emn178/js-md5)
 ### UZIP
 [https://www.npmjs.com/package/uzip](https://www.npmjs.com/package/uzip)
+### jszip
+[https://github.com/Stuk/jszip](https://github.com/Stuk/jszip)
 ### XOR 
 ```javascript
 var xor = function (a, buf) {
